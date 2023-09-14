@@ -18,80 +18,60 @@ namespace SistemaVenta.API.Controllers
 
         [HttpGet]
         [Route("Lista")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Response<string>), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Lista()
         {
-            var rsp = new Response<List<ProductoDTO>>();
-
-            try
+            var rsp = new Response<List<ProductoDTO>>
             {
-                rsp.status = true;
-                rsp.value = await _productoServicio.Lista();
-            }
-            catch (Exception ex)
-            {
-                rsp.status = false;
-                rsp.msg = ex.Message;
-            }
+                status = true,
+                value = await _productoServicio.Lista()
+            };
 
             return Ok(rsp);
         }
 
         [HttpPost]
         [Route("Guardar")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Response<string>), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Guardar([FromBody] ProductoDTO producto)
         {
-            var rsp = new Response<ProductoDTO>();
-
-            try
+            var rsp = new Response<ProductoDTO>
             {
-                rsp.status = true;
-                rsp.value = await _productoServicio.Crear(producto);
-            }
-            catch (Exception ex)
-            {
-                rsp.status = false;
-                rsp.msg = ex.Message;
-            }
+                status = true,
+                value = await _productoServicio.Crear(producto)
+            };
 
             return Ok(rsp);
         }
 
         [HttpPut]
         [Route("Editar")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Response<string>), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Editar([FromBody] ProductoDTO producto)
         {
-            var rsp = new Response<bool>();
-
-            try
+            var rsp = new Response<bool>
             {
-                rsp.status = true;
-                rsp.value = await _productoServicio.Editar(producto);
-            }
-            catch (Exception ex)
-            {
-                rsp.status = false;
-                rsp.msg = ex.Message;
-            }
+                status = true,
+                value = await _productoServicio.Editar(producto)
+            };
 
             return Ok(rsp);
         }
 
         [HttpDelete]
         [Route("Eliminar/{id:int}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Response<string>), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Eliminar(int id)
         {
-            var rsp = new Response<bool>();
-
-            try
+            var rsp = new Response<bool>
             {
-                rsp.status = true;
-                rsp.value = await _productoServicio.Eliminar(id);
-            }
-            catch (Exception ex)
-            {
-                rsp.status = false;
-                rsp.msg = ex.Message;
-            }
+                status = true,
+                value = await _productoServicio.Eliminar(id)
+            };
 
             return Ok(rsp);
         }

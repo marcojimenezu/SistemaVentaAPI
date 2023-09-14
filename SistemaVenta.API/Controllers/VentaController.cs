@@ -18,63 +18,47 @@ namespace SistemaVenta.API.Controllers
 
         [HttpPost]
         [Route("Registrar")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Response<string>), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Registrar([FromBody] VentaDTO venta)
         {
-            var rsp = new Response<VentaDTO>();
-
-            try
+            var rsp = new Response<VentaDTO>
             {
-                rsp.status = true;
-                rsp.value = await _ventaServicio.Registrar(venta);
-            }
-            catch (Exception ex)
-            {
-                rsp.status = false;
-                rsp.msg = ex.Message;
-            }
+                status = true,
+                value = await _ventaServicio.Registrar(venta)
+            };
 
             return Ok(rsp);
         }
 
         [HttpGet]
         [Route("Historial")]
-        public async Task<IActionResult> Historial(string buscarPor, string? numeroVenta, string? fechaInicio, string? fechaFin)
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Response<string>), StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> Historial(string buscarPor, string? numeroVenta, string? fechaInicio,
+            string? fechaFin)
         {
             var rsp = new Response<List<VentaDTO>>();
-            numeroVenta = numeroVenta is null ? "" : numeroVenta;
-            fechaInicio = fechaInicio is null ? "" : fechaInicio;
-            fechaFin = fechaFin is null ? "" : fechaFin;
-
-            try
-            {
-                rsp.status = true;
-                rsp.value = await _ventaServicio.Historial(buscarPor, numeroVenta, fechaInicio, fechaFin);
-            }
-            catch (Exception ex)
-            {
-                rsp.status = false;
-                rsp.msg = ex.Message;
-            }
+            numeroVenta ??= string.Empty;
+            fechaInicio ??= string.Empty;
+            fechaFin ??= string.Empty;
+            rsp.status = true;
+            rsp.value = await _ventaServicio.Historial(buscarPor, numeroVenta, fechaInicio, fechaFin);
 
             return Ok(rsp);
         }
 
         [HttpGet]
         [Route("Reporte")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Response<string>), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Reporte(string? fechaInicio, string? fechaFin)
         {
-            var rsp = new Response<List<ReporteDTO>>();
-
-            try
+            var rsp = new Response<List<ReporteDTO>>
             {
-                rsp.status = true;
-                rsp.value = await _ventaServicio.Reporte(fechaInicio, fechaFin);
-            }
-            catch (Exception ex)
-            {
-                rsp.status = false;
-                rsp.msg = ex.Message;
-            }
+                status = true,
+                value = await _ventaServicio.Reporte(fechaInicio, fechaFin)
+            };
 
             return Ok(rsp);
         }

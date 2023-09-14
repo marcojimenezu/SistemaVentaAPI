@@ -18,20 +18,15 @@ namespace SistemaVenta.API.Controllers
 
         [HttpGet]
         [Route("Lista")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(Response<string>), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Lista(int idUsuario)
         {
-            var rsp = new Response<List<MenuDTO>>();
-
-            try
+            var rsp = new Response<List<MenuDTO>>
             {
-                rsp.status = true;
-                rsp.value = await _menuServicio.Lista(idUsuario);
-            }
-            catch (Exception ex)
-            {
-                rsp.status = false;
-                rsp.msg = ex.Message;
-            }
+                status = true,
+                value = await _menuServicio.Lista(idUsuario)
+            };
 
             return Ok(rsp);
         }
