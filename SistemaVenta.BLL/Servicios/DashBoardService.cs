@@ -94,25 +94,21 @@ namespace SistemaVenta.BLL.Servicios
         public async Task<DashBoardDTO> Resumen()
         {
             DashBoardDTO vmDashBoard = new DashBoardDTO();
-            try
+            vmDashBoard.TotalVentas = await TotalVentasUltimaSemana();
+            vmDashBoard.TotalIngresos = await TotalIngresosUltimaSemana();
+            vmDashBoard.TotalProductos = await TotalProductos();
+
+            List<VentaSemanaDTO> listaVentaSemana = new List<VentaSemanaDTO>();
+
+            foreach(KeyValuePair<string,int> item in await VentasUltimaSemana())
             {
-                vmDashBoard.TotalVentas = await TotalVentasUltimaSemana();
-                vmDashBoard.TotalIngresos = await TotalIngresosUltimaSemana();
-                vmDashBoard.TotalProductos = await TotalProductos();
+                listaVentaSemana.Add(new VentaSemanaDTO() {
+                    Fecha = item.Key,
+                    Total = item.Value
+                });
+            }
 
-                List<VentaSemanaDTO> listaVentaSemana = new List<VentaSemanaDTO>();
-
-                foreach(KeyValuePair<string,int> item in await VentasUltimaSemana())
-                {
-                    listaVentaSemana.Add(new VentaSemanaDTO() {
-                        Fecha = item.Key,
-                        Total = item.Value
-                    });
-                }
-
-                vmDashBoard.VentasUltimaSemana = listaVentaSemana;
-            } 
-            catch { throw; }
+            vmDashBoard.VentasUltimaSemana = listaVentaSemana;
 
             return vmDashBoard;
         }

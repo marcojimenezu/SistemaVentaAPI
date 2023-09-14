@@ -26,96 +26,76 @@ namespace SistemaVenta.BLL.Servicios
 
         public async Task<List<UsuarioDTO>> Lista()
         {
-            try 
-            {
-                var queryUsuario = await _usuarioRepositorio.Consultar();
-                var listaUsuarios = queryUsuario.Include(rol => rol.IdRolNavigation).ToList();
+            var queryUsuario = await _usuarioRepositorio.Consultar();
+            var listaUsuarios = queryUsuario.Include(rol => rol.IdRolNavigation).ToList();
 
-                return _mapper.Map<List<UsuarioDTO>>(listaUsuarios);
-            } 
-            catch { throw; }
+            return _mapper.Map<List<UsuarioDTO>>(listaUsuarios);
         }
 
         public async Task<SesionDTO> ValidarCredenciales(string correo, string clave)
         {
-            try
-            {
-                var queryUsuario = await _usuarioRepositorio.Consultar( u =>
+            var queryUsuario = await _usuarioRepositorio.Consultar( u =>
                 u.Correo == correo &&
                 u.Clave == clave);
                 
-                if(queryUsuario.FirstOrDefault() == null)
-                    throw new TaskCanceledException("El usuario no existe.");
+            if(queryUsuario.FirstOrDefault() == null)
+                throw new TaskCanceledException("El usuario no existe.");
 
-                Usuario devolverUsuario = queryUsuario.Include(rol => rol.IdRolNavigation).First();
+            Usuario devolverUsuario = queryUsuario.Include(rol => rol.IdRolNavigation).First();
 
-                return _mapper.Map<SesionDTO>(devolverUsuario);
-            }
-            catch { throw; }
+            return _mapper.Map<SesionDTO>(devolverUsuario);
         }
 
         public async Task<UsuarioDTO> Crear(UsuarioDTO modelo)
         {
-            try 
-            {
-                var usuarioCreado = await _usuarioRepositorio.Crear(_mapper.Map<Usuario>(modelo));
+            var usuarioCreado = await _usuarioRepositorio.Crear(_mapper.Map<Usuario>(modelo));
 
-                if (usuarioCreado.IdUsuario == 0)
-                    throw new TaskCanceledException("No se pudo crear el usuario.");
+            if (usuarioCreado.IdUsuario == 0)
+                throw new TaskCanceledException("No se pudo crear el usuario.");
 
-                var query = await _usuarioRepositorio.Consultar(u => u.IdUsuario == usuarioCreado.IdUsuario);
+            var query = await _usuarioRepositorio.Consultar(u => u.IdUsuario == usuarioCreado.IdUsuario);
 
-                usuarioCreado = query.Include(rol => rol.IdRolNavigation).First();
+            usuarioCreado = query.Include(rol => rol.IdRolNavigation).First();
 
-                return _mapper.Map<UsuarioDTO>(usuarioCreado);
-            } 
-            catch { throw; }
+            return _mapper.Map<UsuarioDTO>(usuarioCreado);
         }
 
         public async Task<bool> Editar(UsuarioDTO modelo)
         {
-            try
-            {
-                var usuarioModelo = _mapper.Map<Usuario>(modelo);
+            var usuarioModelo = _mapper.Map<Usuario>(modelo);
 
-                var usuarioEncontrado = await _usuarioRepositorio.Obtener(u => u.IdUsuario == usuarioModelo.IdUsuario);
+            var usuarioEncontrado = await _usuarioRepositorio.Obtener(u => u.IdUsuario == usuarioModelo.IdUsuario);
 
-                if(usuarioEncontrado == null)
-                    throw new TaskCanceledException("El usuario no existe.");
+            if(usuarioEncontrado == null)
+                throw new TaskCanceledException("El usuario no existe.");
 
-                usuarioEncontrado.NombreCompleto = usuarioModelo.NombreCompleto;
-                usuarioEncontrado.Correo = usuarioModelo.Correo;
-                usuarioEncontrado.IdRol = usuarioModelo.IdRol;
-                usuarioEncontrado.Clave = usuarioModelo.Clave;
-                usuarioEncontrado.EsActivo = usuarioModelo.EsActivo;
+            usuarioEncontrado.NombreCompleto = usuarioModelo.NombreCompleto;
+            usuarioEncontrado.Correo = usuarioModelo.Correo;
+            usuarioEncontrado.IdRol = usuarioModelo.IdRol;
+            usuarioEncontrado.Clave = usuarioModelo.Clave;
+            usuarioEncontrado.EsActivo = usuarioModelo.EsActivo;
 
-                bool respuesta = await _usuarioRepositorio.Editar(usuarioEncontrado);
+            bool respuesta = await _usuarioRepositorio.Editar(usuarioEncontrado);
 
-                if(!respuesta)
-                    throw new TaskCanceledException("No se pudo editar.");
+            if(!respuesta)
+                throw new TaskCanceledException("No se pudo editar.");
 
-                return respuesta;
-            } 
-            catch { throw; }
+            return respuesta;
         }
 
         public async Task<bool> Eliminar(int id)
         {
-            try
-            {
-                var usuarioEncontrado = await _usuarioRepositorio.Obtener(u => u.IdUsuario == id);
+            var usuarioEncontrado = await _usuarioRepositorio.Obtener(u => u.IdUsuario == id);
 
-                if(usuarioEncontrado == null)
-                    throw new TaskCanceledException("El usuario no existe.");
+            if(usuarioEncontrado == null)
+                throw new TaskCanceledException("El usuario no existe.");
 
-                var respuesta = await _usuarioRepositorio.Eliminar(usuarioEncontrado);
+            var respuesta = await _usuarioRepositorio.Eliminar(usuarioEncontrado);
 
-                if (!respuesta)
-                    throw new TaskCanceledException("No se pudo eliminar.");
+            if (!respuesta)
+                throw new TaskCanceledException("No se pudo eliminar.");
 
-                return respuesta;
-            }
-            catch { throw; }
+            return respuesta;
         }
     }
 }

@@ -38,17 +38,15 @@ namespace SistemaVenta.BLL.Servicios
             IQueryable<MenuRol> tbMenuRol = await _menuRolRepositorio.Consultar();
             IQueryable<Menu> tbMenu = await _menuRepositorio.Consultar();
 
-            try
             {
                 IQueryable<Menu> tbResultado = (from u in tbUsuario
-                                                join mr in tbMenuRol on u.IdRol equals mr.IdRol
-                                                join m in tbMenu on mr.IdMenu equals m.IdMenu
-                                                select m).AsQueryable();
+                    join mr in tbMenuRol on u.IdRol equals mr.IdRol
+                    join m in tbMenu on mr.IdMenu equals m.IdMenu
+                    select m).AsQueryable();
 
                 var listaMenu = tbResultado.ToList();
                 return _mapper.Map<List<MenuDTO>>(listaMenu);
-            } 
-            catch { throw; }
+            }
         }
     }
 }
