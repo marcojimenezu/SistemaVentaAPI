@@ -1,16 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using SistemaVenta.BLL.Servicios.Contrato;
 using SistemaVenta.DAL.Repositorios.Contrato;
 using SistemaVenta.DTO;
 using SistemaVenta.Model;
+using SistemaVenta.Utility;
 
 namespace SistemaVenta.BLL.Servicios
 {
@@ -19,9 +20,10 @@ namespace SistemaVenta.BLL.Servicios
         private readonly IVentaRepository _ventaRepositorio;
         private readonly IGenericRepository<Producto> _productoRepositorio;
         private readonly IMapper _mapper;
+        private const int WeakDays = -7;
 
-        public DashBoardService(IVentaRepository ventaRepository, 
-            IGenericRepository<Producto> productoRepositorio, 
+        public DashBoardService(IVentaRepository ventaRepository,
+            IGenericRepository<Producto> productoRepositorio,
             IMapper mapper)
         {
             _ventaRepositorio = ventaRepository;
@@ -29,88 +31,74 @@ namespace SistemaVenta.BLL.Servicios
             _mapper = mapper;
         }
 
-        private IQueryable<Venta> retornarVentas(IQueryable<Venta> tablaVenta, int restarCantidadDias)
+        public async Task<DashBoardDTO> Resumen()
         {
-            DateTime? ultimaFecha = tablaVenta.OrderByDescending(v => v.FechaRegistro).Select(v => v.FechaRegistro).First();
-            ultimaFecha = ultimaFecha.Value.AddDays(restarCantidadDias);
-
-            return tablaVenta.Where(v => v.FechaRegistro.Value.Date >= ultimaFecha.Value.Date);
-        }
-
-        private async Task<int> TotalVentasUltimaSemana()
-        {
-            int total = 0;
-            IQueryable<Venta> _ventaQuery = await _ventaRepositorio.Consultar();
-
-            if(_ventaQuery.Count() > 0)
+            var salesTable = await _ventaRepositorio.Consultar();
+            var hasSales = salesTable.Any();
+            if (!hasSales)
             {
-                var tablaVenta = retornarVentas(_ventaQuery, -7);
-                total = tablaVenta.Count();
+                return new DashBoardDTO
+                {
+                    TotalIngresos =  0.ToMXString()
+                };
             }
 
-            return total;
-        }
-
-        private async Task<string> TotalIngresosUltimaSemana()
-        {
-            decimal resultado = 0;
-            IQueryable<Venta> _ventaQuery = await _ventaRepositorio.Consultar();
+            var lastSaleDate = await salesTable
+                .OrderByDescending(v => v.FechaRegistro)
+                .Select(v => v.FechaRegistro)
+                .FirstAsync();
             
-            if (_ventaQuery.Count() > 0)
+            var vmDashBoard = new DashBoardDTO
             {
-                var tablaVenta = retornarVentas(_ventaQuery, -7);
-                resultado = tablaVenta.Select(v => v.Total).Sum(v => v.Value);
-            }
+                TotalVentas = await TotalVentasUltimaSemana(salesTable, lastSaleDate),
+                TotalIngresos = await TotalIngresosUltimaSemana(salesTable, lastSaleDate),
+                TotalProductos = await TotalProductos(),
+                VentasUltimaSemana = await VentasUltimaSemana(salesTable, lastSaleDate)
+            };
 
-            return Convert.ToString(resultado, new CultureInfo("es-MX"));
+            return vmDashBoard;
+        }
+
+        private async Task<int> TotalVentasUltimaSemana(IQueryable<Venta> ventaQuery, DateTime? ultimaFecha)
+        {
+            var tablaVenta = RetornarVentas(ventaQuery, ultimaFecha, WeakDays);
+            return await tablaVenta.CountAsync();
+        }
+
+        private async Task<string> TotalIngresosUltimaSemana(IQueryable<Venta> ventaQuery, DateTime? ultimaFecha)
+        {
+            var query = RetornarVentas(ventaQuery, ultimaFecha, WeakDays);
+            var result = await query.Select(v => v.Total).SumAsync(v => v ?? 0);
+            return result.ToMXString();
+        }
+
+        private async Task<List<VentaSemanaDTO>> VentasUltimaSemana(IQueryable<Venta> ventaQuery,
+            DateTime? ultimaFecha)
+        {
+            var tablaVenta = RetornarVentas(ventaQuery, ultimaFecha, WeakDays);
+            var result = tablaVenta
+                .GroupBy(v => v.FechaRegistro.Value.Date)
+                .OrderBy(g => g.Key)
+                .Select(dv => new VentaSemanaDTO
+                {
+                    Fecha = dv.Key.ToString(Constans.DateFormat), 
+                    Total = dv.Count()
+                })
+                .ToList();
+            return result;
         }
 
         private async Task<int> TotalProductos()
         {
-            IQueryable<Producto> _productoQuery = await _productoRepositorio.Consultar();
-
-            int total = _productoQuery.Count();
-            return total;
+            IQueryable<Producto> productoQuery = await _productoRepositorio.Consultar();
+            return await productoQuery.CountAsync();
         }
 
-        private async Task<Dictionary<string, int>> VentasUltimaSemana()
+        private IQueryable<Venta> RetornarVentas(IQueryable<Venta> tablaVenta, DateTime? ultimaFecha,
+            int restarCantidadDias)
         {
-            Dictionary<string, int> resultado = new Dictionary<string, int>();
-
-            IQueryable<Venta> _ventaQuery = await _ventaRepositorio.Consultar();
-
-            if (_ventaQuery.Count() > 0)
-            {
-                var tablaVenta = retornarVentas(_ventaQuery, -7);
-
-                resultado = tablaVenta
-                    .GroupBy(v => v.FechaRegistro.Value.Date).OrderBy(g => g.Key)
-                    .Select(dv => new { fecha = dv.Key.ToString("dd/MM/yyyy"), total = dv.Count() })
-                    .ToDictionary(keySelector: r => r.fecha, elementSelector: r => r.total);
-            }
-            return resultado;
-        }
-
-        public async Task<DashBoardDTO> Resumen()
-        {
-            DashBoardDTO vmDashBoard = new DashBoardDTO();
-            vmDashBoard.TotalVentas = await TotalVentasUltimaSemana();
-            vmDashBoard.TotalIngresos = await TotalIngresosUltimaSemana();
-            vmDashBoard.TotalProductos = await TotalProductos();
-
-            List<VentaSemanaDTO> listaVentaSemana = new List<VentaSemanaDTO>();
-
-            foreach(KeyValuePair<string,int> item in await VentasUltimaSemana())
-            {
-                listaVentaSemana.Add(new VentaSemanaDTO() {
-                    Fecha = item.Key,
-                    Total = item.Value
-                });
-            }
-
-            vmDashBoard.VentasUltimaSemana = listaVentaSemana;
-
-            return vmDashBoard;
+            ultimaFecha = ultimaFecha.Value.AddDays(restarCantidadDias);
+            return tablaVenta.Where(v => v.FechaRegistro.Value.Date >= ultimaFecha.Value.Date);
         }
     }
 }
