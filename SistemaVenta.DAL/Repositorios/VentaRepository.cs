@@ -17,7 +17,6 @@ namespace SistemaVenta.DAL.Repositorios
         {
             Venta ventaGenerada = new Venta();
             var productIds = modelo.DetalleVenta
-                .Select(p => new {p.IdProducto, p.Cantidad})
                 .ToDictionary(t => t.IdProducto, t => t.Cantidad);
             var products = _dbcontext.Productos.Where(p => productIds.Keys.Contains(p.IdProducto)).ToList();
             foreach (Producto product in products)
