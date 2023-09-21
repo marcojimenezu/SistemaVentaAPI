@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SistemaVenta.DTO", "Sistema
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SistemaVenta.Utility", "SistemaVenta.Utility\SistemaVenta.Utility.csproj", "{2CB2F750-F54D-4A4A-A541-E41BA9CCBE10}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SistemaVentaAPI.Tests", "SistemaVentaAPI.Tests\SistemaVentaAPI.Tests.csproj", "{15F92135-2614-4387-B357-42AAA90E7E1A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{2CB2F750-F54D-4A4A-A541-E41BA9CCBE10}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2CB2F750-F54D-4A4A-A541-E41BA9CCBE10}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2CB2F750-F54D-4A4A-A541-E41BA9CCBE10}.Release|Any CPU.Build.0 = Release|Any CPU
+		{15F92135-2614-4387-B357-42AAA90E7E1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15F92135-2614-4387-B357-42AAA90E7E1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15F92135-2614-4387-B357-42AAA90E7E1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15F92135-2614-4387-B357-42AAA90E7E1A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
