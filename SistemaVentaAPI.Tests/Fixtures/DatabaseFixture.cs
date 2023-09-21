@@ -10,11 +10,11 @@ public class DatabaseFixture
 {
     public DatabaseFixture()
     {
-        var contextOptions = new DbContextOptionsBuilder<DbventaContext>()
+        var contextOptions = new DbContextOptionsBuilder<DbVentaContext>()
             .UseInMemoryDatabase("DBVENTA")
             .ConfigureWarnings(b => b.Ignore(InMemoryEventId.TransactionIgnoredWarning))
             .Options;
-        DbVentaContext = new DbventaContext(contextOptions);
+        DbVentaContext = new DbVentaContext(contextOptions);
         DbVentaContext.Database.EnsureDeleted();
         DbVentaContext.Database.EnsureCreated();
 
@@ -48,5 +48,5 @@ public class DatabaseFixture
         DbVentaContext.SaveChanges();
     }
 
-    public DbventaContext DbVentaContext { get; set; }
+    public DbVentaContext DbVentaContext { get; set; }
 }
