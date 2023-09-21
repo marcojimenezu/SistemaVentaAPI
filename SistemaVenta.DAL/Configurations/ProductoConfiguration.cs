@@ -8,7 +8,7 @@ public class ProductoConfiguration : IEntityTypeConfiguration<Producto>
 {
     public void Configure(EntityTypeBuilder<Producto> entity)
     {
-        entity.HasKey(e => e.IdProducto).HasName("PK__Producto__07F4A132C2B18C54");
+        entity.HasKey(e => e.IdProducto).HasName("PK__Producto");
 
         entity.ToTable("Producto");
 
@@ -32,6 +32,6 @@ public class ProductoConfiguration : IEntityTypeConfiguration<Producto>
 
         entity.HasOne(d => d.IdCategoriaNavigation).WithMany(p => p.Productos)
             .HasForeignKey(d => d.IdCategoria)
-            .HasConstraintName("FK__Producto__idCate__48CFD27E");
+            .HasConstraintName("FK__Producto__idCategoria");
     }
 }

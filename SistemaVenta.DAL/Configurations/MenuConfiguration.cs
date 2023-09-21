@@ -8,7 +8,7 @@ public class MenuConfiguration: IEntityTypeConfiguration<Menu>
 {
     public void Configure(EntityTypeBuilder<Menu> entity)
     {
-        entity.HasKey(e => e.IdMenu).HasName("PK__Menu__C26AF483C8AA5070");
+        entity.HasKey(e => e.IdMenu).HasName("PK__Menu");
 
         entity.ToTable("Menu");
 

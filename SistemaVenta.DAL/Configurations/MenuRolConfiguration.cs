@@ -8,7 +8,7 @@ public class MenuRolConfiguration : IEntityTypeConfiguration<MenuRol>
 {
     public void Configure(EntityTypeBuilder<MenuRol> entity)
     {
-        entity.HasKey(e => e.IdMenuRol).HasName("PK__MenuRol__9D6D61A47D0D6F87");
+        entity.HasKey(e => e.IdMenuRol).HasName("PK__MenuRol");
 
         entity.ToTable("MenuRol");
 
@@ -18,10 +18,10 @@ public class MenuRolConfiguration : IEntityTypeConfiguration<MenuRol>
 
         entity.HasOne(d => d.IdMenuNavigation).WithMany(p => p.MenuRols)
             .HasForeignKey(d => d.IdMenu)
-            .HasConstraintName("FK__MenuRol__idMenu__3C69FB99");
+            .HasConstraintName("FK__MenuRol__idMenu");
 
         entity.HasOne(d => d.IdRolNavigation).WithMany(p => p.MenuRols)
             .HasForeignKey(d => d.IdRol)
-            .HasConstraintName("FK__MenuRol__idRol__3D5E1FD2");
+            .HasConstraintName("FK__MenuRol__idRol");
     }
 }

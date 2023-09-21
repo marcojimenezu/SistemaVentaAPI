@@ -8,7 +8,7 @@ public class DetalleVentaConfiguration : IEntityTypeConfiguration<DetalleVenta>
 {
     public void Configure(EntityTypeBuilder<DetalleVenta> entity)
     {
-        entity.HasKey(e => e.IdDetalleVenta).HasName("PK__DetalleV__BFE2843F451EAF7C");
+        entity.HasKey(e => e.IdDetalleVenta).HasName("PK__DetalleVenta");
 
         entity.Property(e => e.IdDetalleVenta).HasColumnName("idDetalleVenta");
         entity.Property(e => e.Cantidad).HasColumnName("cantidad");

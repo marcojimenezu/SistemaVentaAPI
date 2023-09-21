@@ -8,7 +8,7 @@ public class CategoriaConfiguration : IEntityTypeConfiguration<Categoria>
 {
     public void Configure(EntityTypeBuilder<Categoria> entity)
     {
-        entity.HasKey(e => e.IdCategoria).HasName("PK__Categori__8A3D240CB3865DFE");
+        entity.HasKey(e => e.IdCategoria).HasName("PK__Categoria");
 
         entity.Property(e => e.IdCategoria).HasColumnName("idCategoria");
         entity.Property(e => e.EsActivo)

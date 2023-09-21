@@ -8,7 +8,7 @@ public class UsuarioConfiguration : IEntityTypeConfiguration<Usuario>
 {
     public void Configure(EntityTypeBuilder<Usuario> entity)
     {
-        entity.HasKey(e => e.IdUsuario).HasName("PK__Usuario__645723A635E32466");
+        entity.HasKey(e => e.IdUsuario).HasName("PK__Usuario");
 
         entity.ToTable("Usuario");
 
@@ -36,6 +36,6 @@ public class UsuarioConfiguration : IEntityTypeConfiguration<Usuario>
 
         entity.HasOne(d => d.IdRolNavigation).WithMany(p => p.Usuarios)
             .HasForeignKey(d => d.IdRol)
-            .HasConstraintName("FK__Usuario__idRol__403A8C7D");
+            .HasConstraintName("FK__Usuario__idRol");
     }
 }

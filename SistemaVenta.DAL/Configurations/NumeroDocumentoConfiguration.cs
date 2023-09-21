@@ -8,7 +8,7 @@ public class NumeroDocumentoConfiguration : IEntityTypeConfiguration<NumeroDocum
 {
     public void Configure(EntityTypeBuilder<NumeroDocumento> entity)
     {
-        entity.HasKey(e => e.IdNumeroDocumento).HasName("PK__NumeroDo__471E421A4947742D");
+        entity.HasKey(e => e.IdNumeroDocumento).HasName("PK__NumeroDocumento");
 
         entity.ToTable("NumeroDocumento");
 
