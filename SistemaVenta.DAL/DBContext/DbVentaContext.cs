@@ -1,17 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using SistemaVenta.Model;
 
 namespace SistemaVenta.DAL.DBContext;
 
-public partial class DbventaContext : DbContext
+public partial class DbVentaContext : DbContext, IDbVentaContext
 {
-    public DbventaContext()
+    public DbVentaContext()
     {
     }
 
-    public DbventaContext(DbContextOptions<DbventaContext> options)
+    public DbVentaContext(DbContextOptions<DbVentaContext> options)
         : base(options)
     {
     }

@@ -1,3 +1,4 @@
+using SistemaVenta.DAL.DBContext;
 using SistemaVenta.IOC;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -28,6 +29,9 @@ if (app.Environment.IsDevelopment())
     app.UseExceptionHandler("/error");
     app.UseSwagger();
     app.UseSwaggerUI();
+    var scope = app.Services.CreateScope();
+    var dbContext = scope.ServiceProvider.GetRequiredService<DbVentaContext>();
+    dbContext.Database.EnsureCreated();
 }
 
 app.UseCors("PoliticaCORS");

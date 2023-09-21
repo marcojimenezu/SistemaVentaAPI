@@ -14,10 +14,11 @@ namespace SistemaVenta.IOC
     {
         public static void InyectarDependencias(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<DbventaContext>(options =>
+            services.AddDbContext<DbVentaContext>(options =>
             {
                 options.UseSqlServer(configuration.GetConnectionString("cadenaSQL"));
             });
+            services.AddScoped<IDbVentaContext>(p => p.GetRequiredService<DbVentaContext>());
 
             services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddScoped<IVentaRepository, VentaRepository>();
