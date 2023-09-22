@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using SistemaVenta.API.Utilidad;
+using Microsoft.AspNetCore.Mvc;
 using SistemaVenta.BLL.Servicios.Contrato;
 using SistemaVenta.DTO;
+using SistemaVenta.DTO.Response;
 
 namespace SistemaVenta.API.Controllers
 {
@@ -24,8 +24,8 @@ namespace SistemaVenta.API.Controllers
         {
             var rsp = new Response<List<CategoriaDTO>>
             {
-                status = true,
-                value = await _categoriaServicio.Lista()
+                Status = true,
+                Value = await _categoriaServicio.Lista()
             };
 
             return Ok(rsp);

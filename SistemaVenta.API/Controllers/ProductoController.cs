@@ -1,8 +1,8 @@
 ﻿using System.Net.Mime;
 using Microsoft.AspNetCore.Mvc;
-using SistemaVenta.API.Utilidad;
 using SistemaVenta.BLL.Servicios.Contrato;
 using SistemaVenta.DTO;
+using SistemaVenta.DTO.Response;
 
 namespace SistemaVenta.API.Controllers
 {
@@ -25,8 +25,8 @@ namespace SistemaVenta.API.Controllers
         {
             var rsp = new Response<List<ProductoDTO>>
             {
-                status = true,
-                value = await _productoServicio.Lista()
+                Status = true,
+                Value = await _productoServicio.Lista()
             };
 
             return Ok(rsp);
@@ -41,8 +41,8 @@ namespace SistemaVenta.API.Controllers
         {
             var rsp = new Response<ProductoDTO>
             {
-                status = true,
-                value = await _productoServicio.Crear(producto)
+                Status = true,
+                Value = await _productoServicio.Crear(producto)
             };
 
             return Ok(rsp);
@@ -57,8 +57,8 @@ namespace SistemaVenta.API.Controllers
         {
             var rsp = new Response<bool>
             {
-                status = true,
-                value = await _productoServicio.Editar(producto)
+                Status = true,
+                Value = await _productoServicio.Editar(producto)
             };
 
             return Ok(rsp);
@@ -72,8 +72,8 @@ namespace SistemaVenta.API.Controllers
         {
             var rsp = new Response<bool>
             {
-                status = true,
-                value = await _productoServicio.Eliminar(id)
+                Status = true,
+                Value = await _productoServicio.Eliminar(id)
             };
 
             return Ok(rsp);

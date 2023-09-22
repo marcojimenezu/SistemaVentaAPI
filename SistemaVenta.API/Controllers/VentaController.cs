@@ -1,8 +1,8 @@
 ﻿using System.Net.Mime;
 using Microsoft.AspNetCore.Mvc;
-using SistemaVenta.API.Utilidad;
 using SistemaVenta.BLL.Servicios.Contrato;
 using SistemaVenta.DTO;
+using SistemaVenta.DTO.Response;
 
 namespace SistemaVenta.API.Controllers
 {
@@ -26,8 +26,8 @@ namespace SistemaVenta.API.Controllers
         {
             var rsp = new Response<VentaDTO>
             {
-                status = true,
-                value = await _ventaServicio.Registrar(venta)
+                Status = true,
+                Value = await _ventaServicio.Registrar(venta)
             };
 
             return Ok(rsp);
@@ -44,8 +44,8 @@ namespace SistemaVenta.API.Controllers
             numeroVenta ??= string.Empty;
             fechaInicio ??= string.Empty;
             fechaFin ??= string.Empty;
-            rsp.status = true;
-            rsp.value = await _ventaServicio.Historial(buscarPor, numeroVenta, fechaInicio, fechaFin);
+            rsp.Status = true;
+            rsp.Value = await _ventaServicio.Historial(buscarPor, numeroVenta, fechaInicio, fechaFin);
 
             return Ok(rsp);
         }
@@ -58,8 +58,8 @@ namespace SistemaVenta.API.Controllers
         {
             var rsp = new Response<List<ReporteDTO>>
             {
-                status = true,
-                value = await _ventaServicio.Reporte(fechaInicio, fechaFin)
+                Status = true,
+                Value = await _ventaServicio.Reporte(fechaInicio, fechaFin)
             };
 
             return Ok(rsp);

@@ -1,8 +1,8 @@
 ﻿using System.Net.Mime;
 using Microsoft.AspNetCore.Mvc;
-using SistemaVenta.API.Utilidad;
 using SistemaVenta.BLL.Servicios.Contrato;
 using SistemaVenta.DTO;
+using SistemaVenta.DTO.Response;
 
 namespace SistemaVenta.API.Controllers
 {
@@ -25,8 +25,8 @@ namespace SistemaVenta.API.Controllers
         {
             var rsp = new Response<List<UsuarioDTO>>
             {
-                status = true,
-                value = await _usuarioServicio.Lista()
+                Status = true,
+                Value = await _usuarioServicio.Lista()
             };
 
             return Ok(rsp);
@@ -42,8 +42,8 @@ namespace SistemaVenta.API.Controllers
         {
             var rsp = new Response<SesionDTO>
             {
-                status = true,
-                value = await _usuarioServicio.ValidarCredenciales(login.Correo, login.Clave)
+                Status = true,
+                Value = await _usuarioServicio.ValidarCredenciales(login.Correo, login.Clave)
             };
 
             return Ok(rsp);
@@ -58,8 +58,8 @@ namespace SistemaVenta.API.Controllers
         {
             var rsp = new Response<UsuarioDTO>
             {
-                status = true,
-                value = await _usuarioServicio.Crear(usuario)
+                Status = true,
+                Value = await _usuarioServicio.Crear(usuario)
             };
 
             return Ok(rsp);
@@ -74,8 +74,8 @@ namespace SistemaVenta.API.Controllers
         {
             var rsp = new Response<bool>
             {
-                status = true,
-                value = await _usuarioServicio.Editar(usuario)
+                Status = true,
+                Value = await _usuarioServicio.Editar(usuario)
             };
 
             return Ok(rsp);
@@ -89,8 +89,8 @@ namespace SistemaVenta.API.Controllers
         {
             var rsp = new Response<bool>
             {
-                status = true,
-                value = await _usuarioServicio.Eliminar(id)
+                Status = true,
+                Value = await _usuarioServicio.Eliminar(id)
             };
 
             return Ok(rsp);

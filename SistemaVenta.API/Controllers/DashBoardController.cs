@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SistemaVenta.API.Utilidad;
 using SistemaVenta.BLL.Servicios.Contrato;
 using SistemaVenta.DTO;
+using SistemaVenta.DTO.Response;
 
 namespace SistemaVenta.API.Controllers
 {
@@ -24,8 +24,8 @@ namespace SistemaVenta.API.Controllers
         {
             var rsp = new Response<DashBoardDTO>
             {
-                status = true,
-                value = await _dashBoardServicio.Resumen()
+                Status = true,
+                Value = await _dashBoardServicio.Resumen()
             };
 
             return Ok(rsp);
