@@ -4,12 +4,7 @@ namespace SistemaVenta.DTO.Response
 {
     public class Response<T>
     {
-        // TODO: Remove to use method factories
-        public Response()
-        {
-        }
-        
-        private Response(bool status, T? value, string? error = null)
+        private Response(bool status, T? value, IEnumerable<string>? error = null)
         {
             Status = status;
             Value = value;
@@ -18,16 +13,11 @@ namespace SistemaVenta.DTO.Response
         
         public bool Status { get; set; }
         public T? Value { get; set; }
-        public string? Error{ get; set; }
+        public IEnumerable<string>? Error{ get; set; }
 
         public static Response<T> CreateSuccessResponse(T data)
         {
             return new Response<T>(true, data);
-        }
-        
-        public static Response<T?> CreateErrorResponse(string error)
-        {
-            return new Response<T?>(false, default, error);
         }
         
         public static Response<T?> CreateErrorResponse(IEnumerable<ValidationFailure> errors)
@@ -37,7 +27,7 @@ namespace SistemaVenta.DTO.Response
         
         public static Response<T?> CreateErrorResponse(IEnumerable<string> errors)
         {
-            return new Response<T?>(false, default, string.Join(",", errors));
+            return new Response<T?>(false, default, errors);
         }
     }
 }

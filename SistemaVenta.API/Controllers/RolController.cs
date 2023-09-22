@@ -22,12 +22,7 @@ namespace SistemaVenta.API.Controllers
         [ProducesResponseType(typeof(Response<string>), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Lista()
         {
-            var rsp = new Response<List<RolDTO>>
-            {
-                Status = true,
-                Value = await _rolServicio.Lista()
-            };
-
+            var rsp = Response<List<RolDTO>>.CreateSuccessResponse(await _rolServicio.Lista());
             return Ok(rsp);
         }
     }

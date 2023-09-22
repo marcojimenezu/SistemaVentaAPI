@@ -24,12 +24,7 @@ namespace SistemaVenta.API.Controllers
         [ProducesResponseType(typeof(Response<string>), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Registrar([FromBody] VentaDTO venta)
         {
-            var rsp = new Response<VentaDTO>
-            {
-                Status = true,
-                Value = await _ventaServicio.Registrar(venta)
-            };
-
+            var rsp = Response<VentaDTO>.CreateSuccessResponse(await _ventaServicio.Registrar(venta));
             return Ok(rsp);
         }
 
@@ -40,13 +35,11 @@ namespace SistemaVenta.API.Controllers
         public async Task<IActionResult> Historial(string buscarPor, string? numeroVenta, string? fechaInicio,
             string? fechaFin)
         {
-            var rsp = new Response<List<VentaDTO>>();
             numeroVenta ??= string.Empty;
             fechaInicio ??= string.Empty;
             fechaFin ??= string.Empty;
-            rsp.Status = true;
-            rsp.Value = await _ventaServicio.Historial(buscarPor, numeroVenta, fechaInicio, fechaFin);
-
+            var rsp = Response<List<VentaDTO>>.CreateSuccessResponse(
+                await _ventaServicio.Historial(buscarPor, numeroVenta, fechaInicio, fechaFin));
             return Ok(rsp);
         }
 
@@ -56,12 +49,7 @@ namespace SistemaVenta.API.Controllers
         [ProducesResponseType(typeof(Response<string>), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Reporte(string? fechaInicio, string? fechaFin)
         {
-            var rsp = new Response<List<ReporteDTO>>
-            {
-                Status = true,
-                Value = await _ventaServicio.Reporte(fechaInicio, fechaFin)
-            };
-
+            var rsp = Response<List<ReporteDTO>>.CreateSuccessResponse(await _ventaServicio.Reporte(fechaInicio, fechaFin));
             return Ok(rsp);
         }
     }

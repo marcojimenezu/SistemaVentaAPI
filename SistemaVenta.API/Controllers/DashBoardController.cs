@@ -22,12 +22,7 @@ namespace SistemaVenta.API.Controllers
         [ProducesResponseType(typeof(Response<string>), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Resumen()
         {
-            var rsp = new Response<DashBoardDTO>
-            {
-                Status = true,
-                Value = await _dashBoardServicio.Resumen()
-            };
-
+            var rsp = Response<DashBoardDTO>.CreateSuccessResponse(await _dashBoardServicio.Resumen());
             return Ok(rsp);
         }
     }
