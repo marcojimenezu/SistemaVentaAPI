@@ -8,7 +8,7 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
+builder.Services.AddHealthChecks();
 builder.Services.InyectarDependencias(builder.Configuration);
 
 builder.Services.AddCors(options => {
@@ -29,6 +29,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseHealthChecks("/api/health");
 
 app.UseCors("PoliticaCORS");
 

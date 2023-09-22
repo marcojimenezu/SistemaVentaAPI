@@ -1,0 +1,27 @@
+version: "3.9"
+services:
+  db:
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    restart: always
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=${MSSQL_SA_PASSWORD}
+      - MSQL_PID=Developer
+    ports:
+      - "8001:1433"
+  api:
+    build:
+      context: ./
+      dockerfile: SistemaVenta.API/Dockerfile
+    environment:
+      - ConnectionStrings__cadenaSQL=Server=db;DataBase=${DBNAME};User ID=${MSSQL_USER};Password=${MSSQL_USER_PASSWORD};Trusted_Connection=true;Integrated Security=false
+    ports:
+      - "8081:80"
+      - "8082:433"
+    deploy:
+      mode: replicated
+      replicas: 1
+    restart: on-failure
+    depends_on: 
+      db:
+        condition: service_started
