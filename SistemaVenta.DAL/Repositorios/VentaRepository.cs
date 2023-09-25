@@ -6,9 +6,9 @@ namespace SistemaVenta.DAL.Repositorios
 {
     public class VentaRepository : GenericRepository<Venta>, IVentaRepository
     {
-        private readonly DbventaContext _dbcontext;
+        private readonly DbVentaContext _dbcontext;
 
-        public VentaRepository(DbventaContext dbcontext) : base(dbcontext)
+        public VentaRepository(DbVentaContext dbcontext) : base(dbcontext)
         {
             _dbcontext = dbcontext;
         }
