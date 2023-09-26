@@ -22,7 +22,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Folder", "Solution
 		docker-compose.yml = docker-compose.yml
 		.gitignore = .gitignore
 		.env = .env
-        Readme.md = Readme.md
+    Readme.md = Readme.md
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SistemaVentaAPI.Tests", "SistemaVentaAPI.Tests\SistemaVentaAPI.Tests.csproj", "{15F92135-2614-4387-B357-42AAA90E7E1A}"
