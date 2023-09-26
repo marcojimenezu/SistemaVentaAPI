@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SistemaVenta.API.Utilidad;
 using SistemaVenta.BLL.Servicios.Contrato;
 using SistemaVenta.DTO;
+using SistemaVenta.DTO.Response;
 
 namespace SistemaVenta.API.Controllers
 {
@@ -22,12 +22,7 @@ namespace SistemaVenta.API.Controllers
         [ProducesResponseType(typeof(Response<string>), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Lista()
         {
-            var rsp = new Response<List<RolDTO>>
-            {
-                status = true,
-                value = await _rolServicio.Lista()
-            };
-
+            var rsp = Response<List<RolDTO>>.CreateSuccessResponse(await _rolServicio.Lista());
             return Ok(rsp);
         }
     }

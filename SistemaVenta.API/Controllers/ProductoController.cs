@@ -1,8 +1,8 @@
 ﻿using System.Net.Mime;
 using Microsoft.AspNetCore.Mvc;
-using SistemaVenta.API.Utilidad;
 using SistemaVenta.BLL.Servicios.Contrato;
 using SistemaVenta.DTO;
+using SistemaVenta.DTO.Response;
 
 namespace SistemaVenta.API.Controllers
 {
@@ -23,12 +23,7 @@ namespace SistemaVenta.API.Controllers
         [ProducesResponseType(typeof(Response<string>), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Lista()
         {
-            var rsp = new Response<List<ProductoDTO>>
-            {
-                status = true,
-                value = await _productoServicio.Lista()
-            };
-
+            var rsp = Response<List<ProductoDTO>>.CreateSuccessResponse(await _productoServicio.Lista());
             return Ok(rsp);
         }
 
@@ -39,12 +34,7 @@ namespace SistemaVenta.API.Controllers
         [ProducesResponseType(typeof(Response<string>), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Guardar([FromBody] ProductoDTO producto)
         {
-            var rsp = new Response<ProductoDTO>
-            {
-                status = true,
-                value = await _productoServicio.Crear(producto)
-            };
-
+            var rsp = Response<ProductoDTO>.CreateSuccessResponse(await _productoServicio.Crear(producto));
             return Ok(rsp);
         }
 
@@ -55,12 +45,7 @@ namespace SistemaVenta.API.Controllers
         [ProducesResponseType(typeof(Response<string>), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Editar([FromBody] ProductoDTO producto)
         {
-            var rsp = new Response<bool>
-            {
-                status = true,
-                value = await _productoServicio.Editar(producto)
-            };
-
+            var rsp = Response<bool>.CreateSuccessResponse(await _productoServicio.Editar(producto));
             return Ok(rsp);
         }
 
@@ -70,12 +55,7 @@ namespace SistemaVenta.API.Controllers
         [ProducesResponseType(typeof(Response<string>), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Eliminar(int id)
         {
-            var rsp = new Response<bool>
-            {
-                status = true,
-                value = await _productoServicio.Eliminar(id)
-            };
-
+            var rsp = Response<bool>.CreateSuccessResponse(await _productoServicio.Eliminar(id));
             return Ok(rsp);
         }
     }

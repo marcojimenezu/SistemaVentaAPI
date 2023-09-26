@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using SistemaVenta.API.Utilidad;
+using SistemaVenta.DTO.Response;
 
 namespace SistemaVenta.API.Controllers;
 
@@ -22,10 +22,7 @@ public class ErrorController : ControllerBase
         _logger.LogError(exceptionHandlerFeature.Error, "Error trying to resolve request to endpoint {Endpoint} with values {RouteValues}", 
             exceptionHandlerFeature.Endpoint, 
             exceptionHandlerFeature.RouteValues);
-        return StatusCode(StatusCodes.Status500InternalServerError, new Response<string>
-        {
-            status = false,
-            msg = "An error occurred while processing your request."
-        });
+        return StatusCode(StatusCodes.Status500InternalServerError,
+            Response<string>.CreateErrorResponse(new[] {"An error occurred while processing your request."}));
     }
 }
